@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo ifconfig en0 inet 192.168.6.201/32 alias

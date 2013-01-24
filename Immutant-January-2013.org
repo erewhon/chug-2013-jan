@@ -23,6 +23,7 @@
 #+LATEX_HEADER:     linkcolor=blue,%
 #+LATEX_HEADER:     urlcolor=black
 #+LATEX_HEADER: }
+#+EPRESENT_FRAME_LEVEL: 1
 
 #+BEGIN_abstract
 
@@ -38,54 +39,51 @@ written and deployed within the same container.
 
 ## C-c C-e
 
+# You want to deploy ...
+#
+#
+# This could be very useful for those who work within an enterprise.
 
-
-* Immutant
-
-You want to deploy ...
-
-
-This could be very useful for those who work within an enterprise.
-
-** What
-
-slide:
-
-Is this you?
-
-Live in an enterprise?
+* Is this you?
 
 Have a Clojure web app, and need
 - multiple legacy database interop
 - want messaging.  for realz
-- have a number of boxes, and want
-- want something with a greater BAF (*) - Boss Acceptance Factor;
-  YBMV - Your Boss May Vary
-
-Or is this you?
+- have a number of boxes, and want to scale your app
+- want something with a greater BAF [1]
   
+[1] Boss Acceptance Factor; YBMV [2]
+[2] Your Boss May Vary
+  
+* Or is this you?
+
+continued...
 - Not able to use Heroku or the ilk (too ala carte, too expensive, too
   inflexible), and raw EC2 is a little too... raw. 
 - Want scalability, load balancing, messaging, and/or scheduling
-- have some Ruby web code you need to talk to
+- have some Ruby web code you need to interop with
+- all of the above
 
-Then:
-Immutant is here to help
-<insert image of Gil>
+* Then...
 
+Immutant is here to help!
 
-
-Questions:
-- Does it +blend+ scale?
-- How do you fit it in to your existing enterprise?
+[[file:immutant_icon_256px_flipped.png]]
 
 
-** Who
+# Questions:
+# - Does it +blend+ scale?
+# - How do you fit it in to your existing enterprise?
 
-Jim Crossley, et al
-RedHat Project:odd
+* Who
 
-** Why
+Jim Crossley, Toby Crawley, and others from [[http://projectodd.org][project:odd]].
+
+[[file:projectodd-logo.png]]
+
+(sponsored by RedHat)
+
+* Why
 
 If you've worked with Tomcat or other containers, you'll probably feel
 right at home.
@@ -97,23 +95,23 @@ a pretty good chance they're already running Tomcat or JBoss.
 
 +Boss+ Ops acceptance factor.
 
-RedHat!
+[[file:redhat-logo.png]] 
 
-** How
+* How
 
 Feature list for Immutant
 
-** Demo - A Quick Start
+* Demo - A (Very) Quick Start
 
-#+BEGIN_SRC shell
+Add ={:plugins [[lein-immutant "0.14.1"]}=
 
-# Add {:plugins [[lein-immutant "0.14.1"]}
-$EDITOR ~/.lein/profiles.clj
-lein immutant install 0.8.0
-lein immutant run
+#+begin_example
+ $EDITOR ~/.lein/profiles.clj
+ lein immutant install 0.8.0
+ lein immutant run
+#+end_example
+
 # A bunch of output follows...
-
-#+END_SRC
 
 By default, it starts up messaging, scheduling, caching, and a Clojure
 environment.
@@ -124,52 +122,82 @@ localhost, so no worries.
 Port 8080 - web server.
 Port 9990 - JBoss management console.
 
-** Demo - Bringing in the web site
+* Demo - Bringing in the web site
 
+In a window:
 
-#+BEGIN_SRC shell
+#+begin_example
+  git clone git@github.com:chug/cljhouston.git chug
+  cd chug
+  lein immutant init
+  lein immutant run
+#+end_example
 
-git clone git@github.com:chug/cljhouston.git chug
-cd chug
-lein immutant init
-lein immutant run
+New window:
 
-# New window
-$EDITOR src/immutant/init.clj
-lein immutant deploy
-open http://localhost:8080/cljhouston/
+#+begin_example
+  $EDITOR src/immutant/init.clj
+  lein immutant deploy
+  open http://localhost:8080/cljhouston/
+#+end_example
 
-#+END_SRC
+* Demo - Adding a chatroom!?
 
+Add messaging dependency and new code:
 
-** Demo - Adding a chatroom!?
+#+begin_example
+  $EDITOR src/immutant/init.clj
+  $EDITOR src/cljhouston/views/welcome.clj
+#+end_example
 
-#+BEGIN_SRC shell
+Now, test it:
 
-# Add messaging dependency and new
-$EDITOR src/immutant/init.clj
-$EDITOR src/cljhouston/views/welcome.clj
+#+begin_example
+  curl -d message='Hello world!' http://localhost:8080/cljhouston/fritter
+  curl -d message='Hello world again!' http://localhost:8080/cljhouston/fritter
+#+end_example
 
-curl -d message='Hello world!' http://localhost:8080/cljhouston/fritter
-curl -d message='Hello world again!' http://localhost:8080/cljhouston/fritter
+* Next steps
 
-#+END_SRC
-
-Todo:
+Trivial to add:
 - form for submitting
 - date and IP of who added it
 - bounded queue
-- ajax
+- Ajax
 
-Seems kind of overkill, since we're just running in a single JVM.  Can
-just use the atom.  Or...
+* But wait, there's more...
 
-** Demo - Spool up a cluster!
+Seems kind of overkill, since we're just running in a single JVM.
+Could just use the atom without a queue.
 
-#+BEGIN_SRC shell
-#+END_SRC
+Or...
 
-** Notes :noexport:
+* Demo - Spool up a cluster!
+
+In one window:
+
+#+begin_example
+  cp -r ~/.lein/immutant/current/ /tmp/node2 
+  lein immutant run --clustered
+#+end_example
+
+In another window:
+
+#+begin_example
+  rm -rf /tmp/node2/jboss/standalone/data
+  IMMUTANT_HOME=/tmp/node2 lein immutant run --clustered -Djboss.node.name=two -Djboss.socket.binding.port-offset=100
+#+end_example
+
+Now, fritter away!
+
+#+begin_example
+  curl -d message='Clusterduck!' http://localhost:8180/cljhouston/fritter
+#+end_example
+
+# xxx : it should go to both things in cluster, but it isn't?
+# http://immutant.org/tutorials/clustering/index.html
+
+* Notes                                                            :noexport:
 
 
 Mention load balancing using mod_cluster
@@ -287,119 +315,3 @@ On path to 1.0:
 
 
 
-* Tooling - Sublime Text and Light Table
-
-Been using Emacs since 1986.   Version 16 or 17, perhaps.  Don't
-recall...  Ctrl sequences pretty embedded in muscle memory, but it's
-years since I've been where I would consider hardcore.  (Used to dump
-and undump my own Emacs.)  So I don't need complete keyboard parity...
-
-Tried Textmate.  Never used it enough.  Tried Eclipse, but had issues
-with version we were using.  IntelliJ: bought it and still use it
-sometimes.  Saw a few people who were using Sublime Text, read a few
-articles, and decided to give it a try.  Now I use it for 95% of code
-writing, but still use Emacs fairly heavily.  (For example: I used
-Emacs and org mode to write these notes.)
-
-Why have I switched?  Emacs is awesomely great, but I'm too impatient.
-Running beta version (24.x), package managers, and periodically when I
-updated things, they would break in strange ways.  Tired, to a certain
-extent, of debugging my Emacs config.  (Which is about 1600 lines.)
-I'd have over 1000 files loaded into buffers.
-
-Clojure is actually what caused me to switch.  Tried to switch on too
-many modes, and it started trying to do weird things in my ERC mode.
-
-I got better, more sane defaults.  Go to file, project management,
-good language defaults without tons of fiddling.
-
-Repl
-
-First, install the Sublime Text package manager.  Then install
-SublimeREPL.  https://github.com/wuub/SublimeREPL
-
-Docs: http://sublimerepl.readthedocs.org/en/latest/
-
-Supports Clojure, plus a few other languages.  (CoffeeScript, F#,
-Groovy, Haskell, Lua, MozRepl, NodeJS, Python, R, Ruby, Scala, shell.)
-
-
-Created project, turned on side bar, hide projects.  So it shows I
-guess more of a Textmate view.  Which is sometimes useful.  But %P
-helps.  (Goto anything.)
-
-Things that are different:
-
-%N new file
-%O open file
-%S save file
-%F find
-
-%C / %X / %V %Z - copy cut paste undo
-
-
-Which aren't Emacs equiv, but standard Mac, and, frankly, mostly
-easier to hit, so I can deal with it.
-
-Things that I use that are same:
-
-Ctrl-p, Ctrl-n, Ctrl-f, Ctrl-b, Ctrl-a, Ctrl-e, Ctrl-d, Ctrl-o,
-Ctrl-k, Ctrl-y
-
-Not sure if this is purely Sublime Text, or a side effect of using
-some standard widget, but I like it....  And it's enough that I've
-stayed.
-
-Other commands:
-
-%P    - goto anything
-%B    - build.  F4 next error.
-%/    - toggle comments
-C-c a - allign add-on.  I like lining up assignments, and this does it
-        so quickly for me...
-Shift % F - find in files
-%D - select other occurences
-
-        
-^%P to switch projects
-
-
-
-https://speakerdeck.com/caiogondim/sublime-text-2-pro-tips
-https://speakerdeck.com/kentaro/sublime-text-2-for-emacsers
-
-
-Things that I think are cool:
-- multi-line editing.
-- can switch projects without saving changes!  (unedited buffers
-  return; seems to be very good about remembering state)
-
-Packages:
-- align
-- ctags
-
-
-Todo:
-- show Lein runs
-- show tests
-- run stuff in Immutant?  deploy to it?
-- polyglot programming: slim templates, coffeescript, etc?
-
-
-
-
-Testing frameworks: who is using what?
-
-Testing:
-- clojure.test
-- Midje
-- expectations - https://github.com/jaycfields/expectations,
-  http://blog.jayfields.com/2011/11/clojure-expectations-introduction.html, http://jakemccrary.com/blog/2011/12/16/continuous-testing-with-clojure-and-expectations/
-- ClojureCheck - https://bitbucket.org/kotarak/clojurecheck
-- LazyTest - https://github.com/stuartsierra/lazytest
-- Circumspec - https://github.com/stuarthalloway/circumspec
-- speclj - http://speclj.com/
-  
-
-
-  

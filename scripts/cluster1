@@ -1,0 +1,3 @@
+#!/bin/bash
+cp -r ~/.lein/immutant/current/ /tmp/node2 
+lein immutant run --clustered

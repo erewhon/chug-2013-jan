@@ -24,3 +24,119 @@
 #+LATEX_HEADER:     urlcolor=black
 #+LATEX_HEADER: }
 
+* Tooling - Sublime Text and Light Table
+
+Been using Emacs since 1986.   Version 16 or 17, perhaps.  Don't
+recall...  Ctrl sequences pretty embedded in muscle memory, but it's
+years since I've been where I would consider hardcore.  (Used to dump
+and undump my own Emacs.)  So I don't need complete keyboard parity...
+
+Tried Textmate.  Never used it enough.  Tried Eclipse, but had issues
+with version we were using.  IntelliJ: bought it and still use it
+sometimes.  Saw a few people who were using Sublime Text, read a few
+articles, and decided to give it a try.  Now I use it for 95% of code
+writing, but still use Emacs fairly heavily.  (For example: I used
+Emacs and org mode to write these notes.)
+
+Why have I switched?  Emacs is awesomely great, but I'm too impatient.
+Running beta version (24.x), package managers, and periodically when I
+updated things, they would break in strange ways.  Tired, to a certain
+extent, of debugging my Emacs config.  (Which is about 1600 lines.)
+I'd have over 1000 files loaded into buffers.
+
+Clojure is actually what caused me to switch.  Tried to switch on too
+many modes, and it started trying to do weird things in my ERC mode.
+
+I got better, more sane defaults.  Go to file, project management,
+good language defaults without tons of fiddling.
+
+Repl
+
+First, install the Sublime Text package manager.  Then install
+SublimeREPL.  https://github.com/wuub/SublimeREPL
+
+Docs: http://sublimerepl.readthedocs.org/en/latest/
+
+Supports Clojure, plus a few other languages.  (CoffeeScript, F#,
+Groovy, Haskell, Lua, MozRepl, NodeJS, Python, R, Ruby, Scala, shell.)
+
+
+Created project, turned on side bar, hide projects.  So it shows I
+guess more of a Textmate view.  Which is sometimes useful.  But %P
+helps.  (Goto anything.)
+
+Things that are different:
+
+%N new file
+%O open file
+%S save file
+%F find
+
+%C / %X / %V %Z - copy cut paste undo
+
+
+Which aren't Emacs equiv, but standard Mac, and, frankly, mostly
+easier to hit, so I can deal with it.
+
+Things that I use that are same:
+
+Ctrl-p, Ctrl-n, Ctrl-f, Ctrl-b, Ctrl-a, Ctrl-e, Ctrl-d, Ctrl-o,
+Ctrl-k, Ctrl-y
+
+Not sure if this is purely Sublime Text, or a side effect of using
+some standard widget, but I like it....  And it's enough that I've
+stayed.
+
+Other commands:
+
+%P    - goto anything
+%B    - build.  F4 next error.
+%/    - toggle comments
+C-c a - allign add-on.  I like lining up assignments, and this does it
+        so quickly for me...
+Shift % F - find in files
+%D - select other occurences
+
+        
+^%P to switch projects
+
+
+
+https://speakerdeck.com/caiogondim/sublime-text-2-pro-tips
+https://speakerdeck.com/kentaro/sublime-text-2-for-emacsers
+
+
+Things that I think are cool:
+- multi-line editing.
+- can switch projects without saving changes!  (unedited buffers
+  return; seems to be very good about remembering state)
+
+Packages:
+- align
+- ctags
+
+
+Todo:
+- show Lein runs
+- show tests
+- run stuff in Immutant?  deploy to it?
+- polyglot programming: slim templates, coffeescript, etc?
+
+
+
+
+Testing frameworks: who is using what?
+
+Testing:
+- clojure.test
+- Midje
+- expectations - https://github.com/jaycfields/expectations,
+  http://blog.jayfields.com/2011/11/clojure-expectations-introduction.html, http://jakemccrary.com/blog/2011/12/16/continuous-testing-with-clojure-and-expectations/
+- ClojureCheck - https://bitbucket.org/kotarak/clojurecheck
+- LazyTest - https://github.com/stuartsierra/lazytest
+- Circumspec - https://github.com/stuarthalloway/circumspec
+- speclj - http://speclj.com/
+  
+
+
+  
