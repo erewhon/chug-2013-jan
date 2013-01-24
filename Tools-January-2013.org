@@ -1,0 +1,26 @@
+#+TITLE:       Sublime Text for Clojure
+#+AUTHOR:      Steven Byrnes
+#+EMAIL:       erewhon@flatland.org
+#+DATE:        January 24, 2013
+#+OPTIONS:     author:t toc:nil timestamp:nil creator:nil
+#+LaTeX_CLASS: koma-article
+#+LaTeX_CLASS_OPTIONS: [listof=flat, letterpaper, 10pt, abstract=true]
+#####+LaTeX_CLASS_OPTIONS: [twocolumn,captions=tableheading,listof=flat, letterpaper, 11pt, abstract=true]
+#+LaTeX_HEADER: \usepackage[AUTO]{inputenc}
+#+LaTeX_HEADER: \usepackage[T1]{fontenc} 
+#+LaTeX_HEADER: \usepackage[scaled]{beraserif}
+#+LaTeX_HEADER: \usepackage[scaled]{berasans} 
+#+LaTeX_HEADER: \usepackage[scaled]{beramono}
+#+LaTeX_HEADER: \usepackage[style=authoryear-comp,natbib=true]{biblatex}
+#+LaTeX_HEADER: \usepackage{paralist}
+#+LaTeX_HEADER: \let\enumerate\compactenum
+#+LaTeX_HEADER: \let\description\compactdesc
+#+LaTeX_HEADER: \let\itemize\compactitem
+#+LATEX_HEADER: \hypersetup{
+#+LATEX_HEADER:     colorlinks,%
+#+LATEX_HEADER:     citecolor=black,%
+#+LATEX_HEADER:     filecolor=black,%
+#+LATEX_HEADER:     linkcolor=blue,%
+#+LATEX_HEADER:     urlcolor=black
+#+LATEX_HEADER: }
+

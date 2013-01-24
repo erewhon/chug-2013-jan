@@ -1,0 +1,405 @@
+#+TITLE:       A Brief Introduction to Immutant
+#+AUTHOR:      Steven Byrnes
+#+EMAIL:       erewhon@flatland.org
+#+DATE:        January 24, 2013
+#+OPTIONS:     author:t toc:nil timestamp:nil creator:nil
+#+LaTeX_CLASS: koma-article
+#+LaTeX_CLASS_OPTIONS: [listof=flat, letterpaper, 10pt, abstract=true]
+#####+LaTeX_CLASS_OPTIONS: [twocolumn,captions=tableheading,listof=flat, letterpaper, 11pt, abstract=true]
+#+LaTeX_HEADER: \usepackage[AUTO]{inputenc}
+#+LaTeX_HEADER: \usepackage[T1]{fontenc} 
+#+LaTeX_HEADER: \usepackage[scaled]{beraserif}
+#+LaTeX_HEADER: \usepackage[scaled]{berasans} 
+#+LaTeX_HEADER: \usepackage[scaled]{beramono}
+#+LaTeX_HEADER: \usepackage[style=authoryear-comp,natbib=true]{biblatex}
+#+LaTeX_HEADER: \usepackage{paralist}
+#+LaTeX_HEADER: \let\enumerate\compactenum
+#+LaTeX_HEADER: \let\description\compactdesc
+#+LaTeX_HEADER: \let\itemize\compactitem
+#+LATEX_HEADER: \hypersetup{
+#+LATEX_HEADER:     colorlinks,%
+#+LATEX_HEADER:     citecolor=black,%
+#+LATEX_HEADER:     filecolor=black,%
+#+LATEX_HEADER:     linkcolor=blue,%
+#+LATEX_HEADER:     urlcolor=black
+#+LATEX_HEADER: }
+
+#+BEGIN_abstract
+
+[[http://immutant.org/][Immutant]] is an application server for Clojure. Based on JBoss AS7, it
+provides a rich foundation for building non-trivial applications,
+including messaging, caching, jobs, clustering, and more.  Immutant
+integrates with [[http://leiningen.org/][Leiningen]].  It is a sibling project to [[http://torquebox.org/][TorqueBox]], and
+can be configured alongside TorqueBox in the same application server.
+This allows polyglot applications in Java, Clojure, and Ruby to be
+written and deployed within the same container.
+
+#+END_abstract
+
+## C-c C-e
+
+
+
+* Immutant
+
+You want to deploy ...
+
+
+This could be very useful for those who work within an enterprise.
+
+** What
+
+slide:
+
+Is this you?
+
+Live in an enterprise?
+
+Have a Clojure web app, and need
+- multiple legacy database interop
+- want messaging.  for realz
+- have a number of boxes, and want
+- want something with a greater BAF (*) - Boss Acceptance Factor;
+  YBMV - Your Boss May Vary
+
+Or is this you?
+  
+- Not able to use Heroku or the ilk (too ala carte, too expensive, too
+  inflexible), and raw EC2 is a little too... raw. 
+- Want scalability, load balancing, messaging, and/or scheduling
+- have some Ruby web code you need to talk to
+
+Then:
+Immutant is here to help
+<insert image of Gil>
+
+
+
+Questions:
+- Does it +blend+ scale?
+- How do you fit it in to your existing enterprise?
+
+
+** Who
+
+Jim Crossley, et al
+RedHat Project:odd
+
+** Why
+
+If you've worked with Tomcat or other containers, you'll probably feel
+right at home.
+
+Many enterprises are used to deploying this kind of thing and there's
+a pretty good chance they're already running Tomcat or JBoss.
+
++Wife+ Boss acceptance factor.
+
++Boss+ Ops acceptance factor.
+
+RedHat!
+
+** How
+
+Feature list for Immutant
+
+** Demo - A Quick Start
+
+#+BEGIN_SRC shell
+
+# Add {:plugins [[lein-immutant "0.14.1"]}
+$EDITOR ~/.lein/profiles.clj
+lein immutant install 0.8.0
+lein immutant run
+# A bunch of output follows...
+
+#+END_SRC
+
+By default, it starts up messaging, scheduling, caching, and a Clojure
+environment.
+
+It starts up several services, but by default it only listens on
+localhost, so no worries.
+
+Port 8080 - web server.
+Port 9990 - JBoss management console.
+
+** Demo - Bringing in the web site
+
+
+#+BEGIN_SRC shell
+
+git clone git@github.com:chug/cljhouston.git chug
+cd chug
+lein immutant init
+lein immutant run
+
+# New window
+$EDITOR src/immutant/init.clj
+lein immutant deploy
+open http://localhost:8080/cljhouston/
+
+#+END_SRC
+
+
+** Demo - Adding a chatroom!?
+
+#+BEGIN_SRC shell
+
+# Add messaging dependency and new
+$EDITOR src/immutant/init.clj
+$EDITOR src/cljhouston/views/welcome.clj
+
+curl -d message='Hello world!' http://localhost:8080/cljhouston/fritter
+curl -d message='Hello world again!' http://localhost:8080/cljhouston/fritter
+
+#+END_SRC
+
+Todo:
+- form for submitting
+- date and IP of who added it
+- bounded queue
+- ajax
+
+Seems kind of overkill, since we're just running in a single JVM.  Can
+just use the atom.  Or...
+
+** Demo - Spool up a cluster!
+
+#+BEGIN_SRC shell
+#+END_SRC
+
+** Notes :noexport:
+
+
+Mention load balancing using mod_cluster
+
+http://kirindave.tumblr.com/post/272596413/clojure-chat-server-1
+
+
+\lambda
+
+
+
+#+begin_src ditaa :file lambda.png
+
++---+
+| λ |
++---+
+
+#+end_src
+
+
+
+
+
+
+
+
+Maybe throw some Drools at it...
+
+
+What is it?
+
+An app server
+
+
+What does it do?
+
+Allows you to run Clojure and do some enterprise-y things.
+
+Runs on JBoss.  Has Tomcat inside of it.
+
+
+
+
+
+
+Taking a Clojure web app.  (Maybe chug site?)  Show running it
+locally.  Show running it on Heroku.  Show deploying it to immutant
+locally.  Show deploying it to Immutant remotely.  Clustering.  Load
+balancing.  
+
+
+
+
+
+https://github.com/immutant/presentations/blob/master/clojure-west-2012.key
+
+
+Jim Crossley and Toby Crawley
+
+project:odd
+
+App Server for Clojure
+
+runs on JBoss AS 7
+
+- has an embedded Tomcat server in it
+- HornetQ for messaging - vs RabbitMQ
+- Infinispan for caching
+- Quartz for scheduling
+- Distributed transactions / XA
+- Clustering
+- Management / monitoring
+
+What is an app server?
+
+- common in Java world.  for those who haven't used it, brings a lot
+  to table.  but also some loaded terms that non-Java and Java devs
+  might not like
+
+- can run multiple apps in 1 JVM.  classloaders keep things separate.  
+
+Why would you want to use it?
+
+"
+	•	Reduce incidental complexity
+	•	Simplify deployment of non-trivial applications
+	•	Simplify clustering to achieve high-availability
+	•	Encapsulate JBoss services
+	•	Exploit the JVM
+"
+
+Examples:
+- multiple small apps in the enterprise
+- want to create an app with messaging, clustering, caching.  gives
+  you a turnkey solution.  (and, oh yeah, support?)
+
+- path to polyglot.  Have a legacy Java war file?  Ruby?  Clojure?
+  YES!
+
+  (show 1 app server with CHUG web site, Poorsmatic, Jenkins,
+  Sinatra-based monitoring app)
+
+  Java EE.
+
+
+On path to 1.0:
+
+- websockets built in
+
+
+
+
+
+
+
+
+
+* Tooling - Sublime Text and Light Table
+
+Been using Emacs since 1986.   Version 16 or 17, perhaps.  Don't
+recall...  Ctrl sequences pretty embedded in muscle memory, but it's
+years since I've been where I would consider hardcore.  (Used to dump
+and undump my own Emacs.)  So I don't need complete keyboard parity...
+
+Tried Textmate.  Never used it enough.  Tried Eclipse, but had issues
+with version we were using.  IntelliJ: bought it and still use it
+sometimes.  Saw a few people who were using Sublime Text, read a few
+articles, and decided to give it a try.  Now I use it for 95% of code
+writing, but still use Emacs fairly heavily.  (For example: I used
+Emacs and org mode to write these notes.)
+
+Why have I switched?  Emacs is awesomely great, but I'm too impatient.
+Running beta version (24.x), package managers, and periodically when I
+updated things, they would break in strange ways.  Tired, to a certain
+extent, of debugging my Emacs config.  (Which is about 1600 lines.)
+I'd have over 1000 files loaded into buffers.
+
+Clojure is actually what caused me to switch.  Tried to switch on too
+many modes, and it started trying to do weird things in my ERC mode.
+
+I got better, more sane defaults.  Go to file, project management,
+good language defaults without tons of fiddling.
+
+Repl
+
+First, install the Sublime Text package manager.  Then install
+SublimeREPL.  https://github.com/wuub/SublimeREPL
+
+Docs: http://sublimerepl.readthedocs.org/en/latest/
+
+Supports Clojure, plus a few other languages.  (CoffeeScript, F#,
+Groovy, Haskell, Lua, MozRepl, NodeJS, Python, R, Ruby, Scala, shell.)
+
+
+Created project, turned on side bar, hide projects.  So it shows I
+guess more of a Textmate view.  Which is sometimes useful.  But %P
+helps.  (Goto anything.)
+
+Things that are different:
+
+%N new file
+%O open file
+%S save file
+%F find
+
+%C / %X / %V %Z - copy cut paste undo
+
+
+Which aren't Emacs equiv, but standard Mac, and, frankly, mostly
+easier to hit, so I can deal with it.
+
+Things that I use that are same:
+
+Ctrl-p, Ctrl-n, Ctrl-f, Ctrl-b, Ctrl-a, Ctrl-e, Ctrl-d, Ctrl-o,
+Ctrl-k, Ctrl-y
+
+Not sure if this is purely Sublime Text, or a side effect of using
+some standard widget, but I like it....  And it's enough that I've
+stayed.
+
+Other commands:
+
+%P    - goto anything
+%B    - build.  F4 next error.
+%/    - toggle comments
+C-c a - allign add-on.  I like lining up assignments, and this does it
+        so quickly for me...
+Shift % F - find in files
+%D - select other occurences
+
+        
+^%P to switch projects
+
+
+
+https://speakerdeck.com/caiogondim/sublime-text-2-pro-tips
+https://speakerdeck.com/kentaro/sublime-text-2-for-emacsers
+
+
+Things that I think are cool:
+- multi-line editing.
+- can switch projects without saving changes!  (unedited buffers
+  return; seems to be very good about remembering state)
+
+Packages:
+- align
+- ctags
+
+
+Todo:
+- show Lein runs
+- show tests
+- run stuff in Immutant?  deploy to it?
+- polyglot programming: slim templates, coffeescript, etc?
+
+
+
+
+Testing frameworks: who is using what?
+
+Testing:
+- clojure.test
+- Midje
+- expectations - https://github.com/jaycfields/expectations,
+  http://blog.jayfields.com/2011/11/clojure-expectations-introduction.html, http://jakemccrary.com/blog/2011/12/16/continuous-testing-with-clojure-and-expectations/
+- ClojureCheck - https://bitbucket.org/kotarak/clojurecheck
+- LazyTest - https://github.com/stuartsierra/lazytest
+- Circumspec - https://github.com/stuarthalloway/circumspec
+- speclj - http://speclj.com/
+  
+
+
+  

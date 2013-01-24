@@ -1,0 +1,6 @@
+/chug/*
+*.html
+*.tex
+*-blx.bib
+*.run.xml
+*.sublime-workspace
