@@ -81,7 +81,7 @@ Jim Crossley, Toby Crawley, and others from [[http://projectodd.org][project:odd
 
 [[file:projectodd-logo.png]]
 
-(sponsored by RedHat)
+(project:odd is a research team within RedHat)
 
 * Why
 
@@ -91,15 +91,26 @@ right at home.
 Many enterprises are used to deploying this kind of thing and there's
 a pretty good chance they're already running Tomcat or JBoss.
 
+Reduces accidental complexity by giving you the entire stack.  Since
+it's an app container, can run multiple Clojure apps simultaneously,
+perhaps with their own version of Clojure.
+
 +Wife+ Boss acceptance factor.
 
 +Boss+ Ops acceptance factor.
 
 [[file:redhat-logo.png]] 
 
-* How
+* Features
 
-Feature list for Immutant
+- Built on JBoss AS7 (JEE)
+- Asynchronous messaging (HornetMQ)
+- Caching
+- Scheduled jobs
+- XA transactions
+- Clustering
+- Daemons
+- Plays well with Leiningen
 
 * Demo - A (Very) Quick Start
 
@@ -127,13 +138,26 @@ Port 9990 - JBoss management console.
 In a window:
 
 #+begin_example
-  git clone git@github.com:chug/cljhouston.git chug
-  cd chug
+  git clone git@github.com:chug/cljhouston.git chug1
+  cd chug1
   lein immutant init
   lein immutant run
 #+end_example
 
-New window:
+Modify =init.clj= to contain:
+
+#+begin_example
+  (ns immutant.init
+    (:require [immutant.web :as web]
+              [immutant.util :as util]
+              [noir.server :as server]))
+
+  ;; To start a Noir app:
+  (server/load-views (util/app-relative "src/cljhouston/views"))
+  (web/start "/" (server/gen-handler {:mode :dev :ns 'cljhouston}))
+#+end_example
+
+and re-deploy, i.e.:
 
 #+begin_example
   $EDITOR src/immutant/init.clj
@@ -143,11 +167,13 @@ New window:
 
 * Demo - Adding a chatroom!?
 
-Add messaging dependency and new code:
+Add messaging dependency, new code, and deploy:
 
 #+begin_example
+  $EDITOR src/cljhouston/fritter.clj
   $EDITOR src/immutant/init.clj
   $EDITOR src/cljhouston/views/welcome.clj
+  lein immutant deploy
 #+end_example
 
 Now, test it:
@@ -178,26 +204,55 @@ In one window:
 
 #+begin_example
   cp -r ~/.lein/immutant/current/ /tmp/node2 
-  lein immutant run --clustered
+  lein immutant run --clustered -b 192.168.6.201
 #+end_example
 
 In another window:
 
 #+begin_example
   rm -rf /tmp/node2/jboss/standalone/data
-  IMMUTANT_HOME=/tmp/node2 lein immutant run --clustered -Djboss.node.name=two -Djboss.socket.binding.port-offset=100
+  IMMUTANT_HOME=/tmp/node2 lein immutant run --clustered -Djboss.node.name=two -b 192.168.6.202
 #+end_example
 
 Now, fritter away!
 
 #+begin_example
-  curl -d message='Clusterduck!' http://localhost:8180/cljhouston/fritter
+  curl -d message='Clusterduck!' http://192.168.6.201:8080/cljhouston/fritter
+#+end_example
+
+If we need to deploy:
+
+#+begin_example
+  IMMUTANT_HOME=/tmp/node2 lein immutant deploy
 #+end_example
 
 # xxx : it should go to both things in cluster, but it isn't?
 # http://immutant.org/tutorials/clustering/index.html
 
+* Pipelines
+
+* Polyglot
+
+Using Overlay, you can mix Clojure, Ruby, and Java in the same server.
+
+Toby Crawley gave a presentation on this.
+
+* Roadmap
+
+Coming "soon":
+- Websockets support
+
+  
+* /fin/
+
+Immutant gives you a nice, turkey solution for building non-trivial
+Clojure (and Ruby!) web applications with all the fixings.
+
 * Notes                                                            :noexport:
+
+reduces accidental complexity
+
+
 
 
 Mention load balancing using mod_cluster

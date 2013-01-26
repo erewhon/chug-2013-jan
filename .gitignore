@@ -1,4 +1,6 @@
 /chug/*
+/chug1/*
+/chug2/*
 *.html
 *.tex
 *-blx.bib

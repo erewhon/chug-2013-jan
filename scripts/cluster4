@@ -1,0 +1,4 @@
+#!/bin/bash
+# -Djboss.socket.binding.port-offset=100 
+rm -rf /tmp/node4/jboss/standalone/data
+IMMUTANT_HOME=/tmp/node4 lein immutant run --clustered -Djboss.node.name=four -b 192.168.6.204

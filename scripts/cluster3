@@ -1,0 +1,4 @@
+#!/bin/bash
+# -Djboss.socket.binding.port-offset=100 
+rm -rf /tmp/node3/jboss/standalone/data
+IMMUTANT_HOME=/tmp/node3 lein immutant run --clustered -Djboss.node.name=three -b 192.168.6.203

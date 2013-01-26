@@ -1,3 +1,5 @@
 #!/bin/bash
 cp -r ~/.lein/immutant/current/ /tmp/node2 
-lein immutant run --clustered
+cp -r ~/.lein/immutant/current/ /tmp/node3
+cp -r ~/.lein/immutant/current/ /tmp/node4 
+lein immutant run --clustered -b 192.168.6.201

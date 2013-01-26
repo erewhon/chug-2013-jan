@@ -1,3 +1,4 @@
 #!/bin/bash
+# -Djboss.socket.binding.port-offset=100 
 rm -rf /tmp/node2/jboss/standalone/data
-IMMUTANT_HOME=/tmp/node2 lein immutant run --clustered -Djboss.node.name=two -Djboss.socket.binding.port-offset=100
+IMMUTANT_HOME=/tmp/node2 lein immutant run --clustered -Djboss.node.name=two -b 192.168.6.202

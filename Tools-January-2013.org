@@ -24,6 +24,46 @@
 #+LATEX_HEADER:     urlcolor=black
 #+LATEX_HEADER: }
 
+* A quick overview of Sublime Text
+
+who, what, when, how much
+
+can use snippets
+
+
+quick, functional, extensible
+can use some things from Textmate
+
+sane (for me) out of box experience
+
+
+* Plugins
+
+Plugin manager
+
+url
+
+* Select plugins
+
+repl
+
+git
+
+* Basic navigation
+
+Many simple navigation commands are compatible with Emacs.  (Also
+Vintage mode for those who roll that way.)
+
+(example commands)
+
+* Development
+
+build integration: example with Clojure?
+
+* repl
+
+
+
 * Tooling - Sublime Text and Light Table
 
 Been using Emacs since 1986.   Version 16 or 17, perhaps.  Don't

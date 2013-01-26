@@ -10,5 +10,4 @@ See:
 # Resources
 
 + [Immutant](http://immutant.org/) - an application server for Clojure.  Built on JBoss.
-+ #immutant
-
++ #immutant IRC channel
