@@ -4,8 +4,8 @@ I will do a mini-presentation on Immutant.
 
 See:
 
-  Immutant-January-2013.org - org-mode notes on presentation
-  Tools-January-2013.org - some notes on Sublime Text
++ Immutant-January-2013.org - org-mode notes on presentation
++ Tools-January-2013.org - some notes on Sublime Text
 
 # Resources
 
